@@ -4,7 +4,7 @@ use strict;
 use Kwiki::UserName '-Base';
 use mixin 'Kwiki::Installer';
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 const class_id => 'user_name';
 const class_title => 'Kwiki with TypeKey authentication';
@@ -21,29 +21,11 @@ sub register {
 sub return_typekey {
     my %cookie = map { ($_ => scalar $self->cgi->$_) } qw(email name nick ts sig);
     $self->hub->cookie->write(typekey => \%cookie);
-    # XXX: Spoon doesn't write cookie in redirect!
-    # $self->redirect("?" . $self->cgi->page);
-    my $url = $self->config->script_name . "?" . $self->cgi->page;
-    return <<HTML;
-<HTML><HEAD>
-<TITLE>Redirecting</TITLE>
-<META HTTP-EQUIV="refresh" content="1; url=$url">
-</HEAD>
-<BODY onLoad="location.replace('$url')">
-Redirecting you to $url</BODY></HTML>
-HTML
-    ;
+    $self->redirect("?" . $self->cgi->page);
 }
 
 sub logout_typekey {
-    $self->hub->cookie->write(typekey => {});
-    # XXX This is the only way to override Kwiki/Spoon Cookie expires, Ingy!
-    no warnings 'redefine';
-    my $old = Kwiki::Cookie->can('expires');
-    *Kwiki::Cookie::expires = sub {
-	($_ eq 'typekey') ?
-	    do { *Kwiki::Cookie::expires = $old; "-3d" } : "+5y";
-    };
+    $self->hub->cookie->write(typekey => {}, { -expires => "-3d" });
     $self->render_screen(content_pane => 'logout_typekey.html');
 }
 

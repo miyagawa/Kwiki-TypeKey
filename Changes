@@ -1,5 +1,8 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.04  Tue Apr  5 13:35:51 JST 2005
+	- Now it requires Spoon 0.22 and Kwiki 0.38
+
 0.03  Fri Apr  1 20:16:20 JST 2005
 	* Added logout feature (wacky code to override Spoon cookie capability)
 	- Now $tk->skip_expiry_check is always 1

@@ -2,7 +2,7 @@ package Kwiki::Users::TypeKey;
 use strict;
 use Authen::TypeKey;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 use Kwiki::Users '-Base';
 
 const class_id    => "users";
@@ -22,7 +22,7 @@ sub current {
 }
 
 sub new_user {
-    $self->user_class->new(hub => $self->hub);
+    $self->user_class->new();
 }
 
 package Kwiki::User::TypeKey;

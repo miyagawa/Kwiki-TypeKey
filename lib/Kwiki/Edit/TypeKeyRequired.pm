@@ -1,6 +1,6 @@
 package Kwiki::Edit::TypeKeyRequired;
 use strict;
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 use Kwiki::Plugin '-Base';
 use mixin 'Kwiki::Installer';
