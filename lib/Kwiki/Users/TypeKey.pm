@@ -2,7 +2,7 @@ package Kwiki::Users::TypeKey;
 use strict;
 use Authen::TypeKey;
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 use Kwiki::Users '-Base';
 
 const class_id    => "users";

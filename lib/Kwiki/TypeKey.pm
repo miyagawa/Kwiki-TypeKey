@@ -4,7 +4,7 @@ use strict;
 use Kwiki::UserName '-Base';
 use mixin 'Kwiki::Installer';
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 const class_id => 'user_name';
 const class_title => 'Kwiki with TypeKey authentication';

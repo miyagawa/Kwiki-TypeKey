@@ -1,6 +1,6 @@
 package Kwiki::Edit::TypeKeyRequired;
 use strict;
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 use Kwiki::Plugin '-Base';
 use mixin 'Kwiki::Installer';
@@ -45,7 +45,7 @@ __template/tt2/edit_noTypeKey.html__
 <p>
 This web site does not allow anonymous editing.
 [%- USE tk = url("https://www.typekey.com/t/typekey/login") %]
-Please <a href="[% back = script_name _ "?action=return_typekey&page=" _ hub.cgi.page_name; tk(t=tk_token, v="1.1", _return=back, need_email=1) %]">Login via TypeKey</a> first.
+Please <a href="[% back = script_name _ "?action=return_typekey&page=" _ hub.cgi.page_name; tk(t=tk_token, v="1.1", _return=back, need_email=0) %]">Login via TypeKey</a> first.
 </p>
 <p>
 </p>

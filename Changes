@@ -1,5 +1,8 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.05  Wed Apr  6 15:45:29 JST 2005
+	- Make sure need_email=0 with Kwiki::Edit::TypeKeyRequired
+
 0.04  Tue Apr  5 13:35:51 JST 2005
 	- Now it requires Spoon 0.22 and Kwiki 0.38
 
