@@ -6,5 +6,6 @@ WriteMakefile(
 	Test::More => 0.32,
 	Authen::TypeKey => 0.02,
 	Kwiki => 0.37,
+	Kwiki::UserName => 0.14,
     },
 );

@@ -1,8 +1,13 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.03  Fri Apr  1 20:16:20 JST 2005
+	* Added logout feature (wacky code to override Spoon cookie capability)
+	- Now $tk->skip_expiry_check is always 1
+	- need_email=0
+
 0.02  Wed Mar 30 04:47:19 JST 2005
 	* Fixed timing of plugin/users creation to avoid perms problem
-	  (Old installaers: Make sure plugins/users is writable by Kwiki user)
+	  (Old installers: Make sure plugins/users is writable by Kwiki user)
 	* Added Kwiki::Edit::TypeKeyRequired
 	- add PREREQ to Makefile.PL
 

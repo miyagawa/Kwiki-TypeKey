@@ -4,7 +4,7 @@ use strict;
 use Kwiki::UserName '-Base';
 use mixin 'Kwiki::Installer';
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 const class_id => 'user_name';
 const class_title => 'Kwiki with TypeKey authentication';
@@ -15,6 +15,7 @@ sub register {
     my $registry = shift;
     $registry->add(preload => 'user_name');
     $registry->add(action  => "return_typekey");
+    $registry->add(action  => "logout_typekey");
 }
 
 sub return_typekey {
@@ -32,6 +33,18 @@ sub return_typekey {
 Redirecting you to $url</BODY></HTML>
 HTML
     ;
+}
+
+sub logout_typekey {
+    $self->hub->cookie->write(typekey => {});
+    # XXX This is the only way to override Kwiki/Spoon Cookie expires, Ingy!
+    no warnings 'redefine';
+    my $old = Kwiki::Cookie->can('expires');
+    *Kwiki::Cookie::expires = sub {
+	($_ eq 'typekey') ?
+	    do { *Kwiki::Cookie::expires = $old; "-3d" } : "+5y";
+    };
+    $self->render_screen(content_pane => 'logout_typekey.html');
 }
 
 package Kwiki::TypeKey::CGI;
@@ -57,15 +70,14 @@ Kwiki::TypeKey - Kwiki TypeKey integration
 =head1 SYNOPSIS
 
   > $EDITOR plugins
-  # Kwiki::UserName <-- If you use it, comment it out
+  # Kwiki::UserName <- If you use it, comment it out
   Kwiki::TypeKey
   Kwiki::Edit::TypeKeyRequired <- Optional: If you don't allow anonymous writes
   > $EDITOR config.yaml
   users_class: Kwiki::Users::TypeKey
-  tk_token: YOUR_TYPEKEY_TOKEN
+  tk_token:    YOUR_TYPEKEY_TOKEN
   script_name: http://www.example.com/kwiki/index.cgi <- needs absURI
   > kwiki -update
-  > chmod go+w plugin/users
 
 =head1 DESCRIPTION
 
@@ -78,7 +90,7 @@ authentication. You need a valid TypeKey token registered at http://www.typekey.
 
 =item *
 
-Now this plugin stores TypeKey response query to cookie store and verifies the data in every request to avoid spoofed cookie. It means every time it issues GET request to TypeKey servers (with If-Modified-Since) and do some crypto calculation, which should be avoided.
+Now this plugin stores TypeKey response query to cookie store and verifies the data in every request to avoid spoofed cookie. It means every time it issues GET request to TypeKey servers (with If-Modified-Since) and do some crypto calculation, which should be avoided. We need a patch for Authen::TypeKey.
 
 =item *
 
@@ -112,11 +124,15 @@ __template/tt2/user_name_title.html__
 <!-- BEGIN user_name_title.html -->
 <div id="user_name_title">
 <em>[% IF hub.users.current.name -%]
-(Logged In as <a href="http://profile.typekey.com/[% hub.users.current.name %]/">[% hub.users.current.nick | html %]</a>)
+(Logged In as <a href="http://profile.typekey.com/[% hub.users.current.name %]/">[% hub.users.current.nick | html %]</a>: <a href="[% script_name %]?action=logout_typekey">Logout</a>)
 [%- ELSE -%]
-[%- USE tk = url("https://www.typekey.com/t/typekey/login") -%] 
-(Not Logged In. <a href="[% back = script_name _ "?action=return_typekey&page=" _ hub.cgi.page_name; tk(t=tk_token, v="1.1", _return=back, need_email=1) %]">Login via TypeKey</a>)
+[%- USE tk = url("https://www.typekey.com/t/typekey/login") -%]
+(Not Logged In: <a href="[% back = script_name _ "?action=return_typekey&page=" _ hub.cgi.page_name; tk(t=tk_token, v="1.1", _return=back, need_email=0) %]">Login via TypeKey</a>)
 [%- END %]
 </em>
 </div>
 <!-- END user_name_title.html -->
+__template/tt2/logout_typekey.html__
+<!-- BEGIN logout_typekey.html -->
+<p>You've now successfully logged out.</p>
+<!-- END logout_typekey.html -->

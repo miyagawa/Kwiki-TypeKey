@@ -2,7 +2,7 @@ package Kwiki::Users::TypeKey;
 use strict;
 use Authen::TypeKey;
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 use Kwiki::Users '-Base';
 
 const class_id    => "users";
@@ -36,7 +36,8 @@ field 'ts';
 sub set_user_name {
     return unless $self->is_in_cgi;
     my $name = '';
-    my $cookie = $self->hub->cookie->jar->{typekey} or return;
+    my $cookie = $self->hub->cookie->jar->{typekey};
+    $cookie && $cookie->{sig} or return;
 
     $self->validate_sig($cookie) or return;
     for my $key (qw(email name nick ts)) {
@@ -51,12 +52,7 @@ sub validate_sig {
     my $tk = Authen::TypeKey->new();
     $tk->key_cache($self->hub->config->tk_key_cache);
     $tk->token($self->hub->config->tk_token);
-    my $expires = $self->hub->config->tk_expires;
-    if ($expires == 0){
-	$tk->skip_expiry_check(1);
-    } else {
-	$tk->expires($expires);
-    }
+    $tk->skip_expiry_check(1);
     my $res = $tk->verify($q) or warn $tk->errstr;
     $res;
 }
@@ -68,5 +64,4 @@ __DATA__
 
 __config/typekey.yaml__
 tk_token: PUT YOUR TOKEN HERE
-tk_expires: 604800
 tk_key_cache: plugin/users/keycache.txt
