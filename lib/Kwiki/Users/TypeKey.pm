@@ -2,7 +2,7 @@ package Kwiki::Users::TypeKey;
 use strict;
 use Authen::TypeKey;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 use Kwiki::Users '-Base';
 
 const class_id    => "users";
@@ -11,6 +11,7 @@ const user_class  => "Kwiki::User::TypeKey";
 
 sub init {
     $self->hub->config->add_file('typekey.yaml');
+    return unless $self->is_in_cgi;
     io($self->plugin_directory)->mkdir;
 }
 
@@ -56,7 +57,8 @@ sub validate_sig {
     } else {
 	$tk->expires($expires);
     }
-    $tk->verify($q);
+    my $res = $tk->verify($q) or warn $tk->errstr;
+    $res;
 }
 
 package Kwiki::Users::TypeKey;

@@ -1,4 +1,10 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.02  Wed Mar 30 04:47:19 JST 2005
+	* Fixed timing of plugin/users creation to avoid perms problem
+	  (Old installaers: Make sure plugins/users is writable by Kwiki user)
+	* Added Kwiki::Edit::TypeKeyRequired
+	- add PREREQ to Makefile.PL
+
 0.01  Wed Mar 30 04:12:27 2005
 	- original version

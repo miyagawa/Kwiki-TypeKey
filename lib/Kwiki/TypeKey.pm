@@ -4,7 +4,7 @@ use strict;
 use Kwiki::UserName '-Base';
 use mixin 'Kwiki::Installer';
 
-our $VERSION = "0.01";
+our $VERSION = 0.02;
 
 const class_id => 'user_name';
 const class_title => 'Kwiki with TypeKey authentication';
@@ -57,13 +57,15 @@ Kwiki::TypeKey - Kwiki TypeKey integration
 =head1 SYNOPSIS
 
   > $EDITOR plugins
-  # Kwiki::UserName <-- If you use it, comment out
+  # Kwiki::UserName <-- If you use it, comment it out
   Kwiki::TypeKey
+  Kwiki::Edit::TypeKeyRequired <- Optional: If you don't allow anonymous writes
   > $EDITOR config.yaml
   users_class: Kwiki::Users::TypeKey
   tk_token: YOUR_TYPEKEY_TOKEN
   script_name: http://www.example.com/kwiki/index.cgi <- needs absURI
   > kwiki -update
+  > chmod go+w plugin/users
 
 =head1 DESCRIPTION
 
@@ -82,6 +84,10 @@ Now this plugin stores TypeKey response query to cookie store and verifies the d
 
 Integration with C<edit_by> link: (e.g. Kwiki::RecentChanges)
 
+=item *
+
+Logout feature.
+
 =back
 
 =head1 AUTHOR
@@ -93,7 +99,7 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Authen::TypeKey>
+L<Authen::TypeKey> L<Kwiki::Edit::RequireUserName> L<Kwiki::Users::Remote>
 
 =cut
 
