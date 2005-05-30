@@ -78,10 +78,6 @@ Now this plugin stores TypeKey response query to cookie store and verifies the d
 
 Integration with C<edit_by> link: (e.g. Kwiki::RecentChanges)
 
-=item *
-
-Logout feature.
-
 =back
 
 =head1 AUTHOR
