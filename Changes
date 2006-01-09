@@ -1,5 +1,10 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.06  Mon Jan  9 21:06:46 UTC 2006
+        * Now it shows your picture taken from TypeKey when you're logged in.
+        * Integrated with Recent Changes page, showing your pic there too.
+          (Thanks to Ingy dot Net for his Kwiki-fu)
+
 0.05  Wed Apr  6 15:45:29 JST 2005
 	- Make sure need_email=0 with Kwiki::Edit::TypeKeyRequired
 

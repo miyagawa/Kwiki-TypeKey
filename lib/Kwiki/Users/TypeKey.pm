@@ -32,6 +32,7 @@ field 'email';
 field 'name';
 field 'nick';
 field 'ts';
+field 'icon';
 
 sub set_user_name {
     return unless $self->is_in_cgi;
@@ -40,7 +41,7 @@ sub set_user_name {
     $cookie && $cookie->{sig} or return;
 
     $self->validate_sig($cookie) or return;
-    for my $key (qw(email name nick ts)) {
+    for my $key (qw(email name nick ts icon)) {
 	$self->$key($cookie->{$key});
     }
 }
