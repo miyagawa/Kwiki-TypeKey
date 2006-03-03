@@ -48,6 +48,12 @@ sub set_user_name {
 
 sub validate_sig {
     my $data = shift;
+
+    # Kwiki::CGI adds utf-8 flags to all the values
+    for my $key (keys %$data) {
+        utf8::encode($data->{$key}) if defined $data->{$key};
+    }
+
     require CGI;
     my $q = CGI->new({ %$data });
     my $tk = Authen::TypeKey->new();

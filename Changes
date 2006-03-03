@@ -1,5 +1,9 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.07  2006-03-03T06:01:46Z
+        * Fixed UTF-8 CGI parameters bug.
+          (Thansk to Yappo)
+
 0.06  Mon Jan  9 21:06:46 UTC 2006
         * Now it shows your picture taken from TypeKey when you're logged in.
         * Integrated with Recent Changes page, showing your pic there too.
