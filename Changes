@@ -1,5 +1,9 @@
 Revision history for Perl extension Kwiki::TypeKey
 
+0.08  Wed Nov 29 14:36:54 PST 2006
+        * Fixed UTF-8 Cookie paraemters bug.
+          (Thanks to Ingy dot Net)
+
 0.07  2006-03-03T06:01:46Z
         * Fixed UTF-8 CGI parameters bug.
           (Thansk to Yappo)
