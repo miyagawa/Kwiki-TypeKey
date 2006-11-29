@@ -27,6 +27,7 @@ sub new_user {
 
 package Kwiki::User::TypeKey;
 use base qw(Kwiki::User);
+use Encode;
 
 field 'email';
 field 'name';
@@ -42,7 +43,7 @@ sub set_user_name {
 
     $self->validate_sig($cookie) or return;
     for my $key (qw(email name nick ts icon)) {
-	$self->$key($cookie->{$key});
+	$self->$key( decode_utf8($cookie->{$key}) ); # we need to decode it back to Unicode
     }
 }
 
